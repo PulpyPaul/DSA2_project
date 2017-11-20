@@ -74,18 +74,6 @@ public:
 	*/
 	void SetModelMatrix(matrix4 a_m4ToWorld);
 	/*
-	USAGE: Gets whether the entity collides with other entities
-	ARGUMENTS: ---
-	OUTPUT: Collision flag
-	*/
-	bool GetHasCollisions(void);
-	/*
-	USAGE: Sets whether the entity collides with other entities
-	ARGUMENTS: bool a_bHasCollisions -> flag for collision
-	OUTPUT: ---
-	*/
-	void SetHasCollisions(bool a_bHasCollisions);
-	/*
 	USAGE: Gets the model associated with this entity
 	ARGUMENTS: ---
 	OUTPUT: Model

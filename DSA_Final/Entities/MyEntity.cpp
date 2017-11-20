@@ -12,14 +12,6 @@ void Simplex::MyEntity::SetModelMatrix(matrix4 a_m4ToWorld)
 	m_pModel->SetModelMatrix(m_m4ToWorld);
 	m_pRigidBody->SetModelMatrix(m_m4ToWorld);
 }
-bool Simplex::MyEntity::GetHasCollisions(void) {
-	return m_bHasCollisions;
-}
-void Simplex::MyEntity::SetHasCollisions(bool a_bHasCollisions) {
-	if (!m_bInMemory)
-		return;
-	m_bHasCollisions = a_bHasCollisions;
-}
 Model* Simplex::MyEntity::GetModel(void){return m_pModel;}
 MyRigidBody* Simplex::MyEntity::GetRigidBody(void){	return m_pRigidBody; }
 bool Simplex::MyEntity::IsInitialized(void){ return m_bInMemory; }
@@ -117,9 +109,6 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 	//if not in memory return
 	if (!m_bInMemory || !other->m_bInMemory)
 		return true;
-	//If one or both objects does not have collisions, return false
-	if (!GetHasCollisions() || !other->GetHasCollisions())
-		return false;
 
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }

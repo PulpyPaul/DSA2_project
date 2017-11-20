@@ -1,5 +1,5 @@
 /*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
+Programmer: Daniel Timko (det2948@rit.edu)
 Date: 2017/06
 ----------------------------------------------*/
 #ifndef __MYRIGIDBODY_H_
@@ -8,6 +8,12 @@ Date: 2017/06
 #include "Simplex\Simplex.h"
 
 namespace Simplex {
+	//TODO: Do more with this
+	struct Manifold {
+		vector3 pos;
+		vector3 norm;
+		float penetration;
+	};
 
 	//System Class
 	class MyRigidBody {
@@ -16,6 +22,9 @@ namespace Simplex {
 		bool m_bVisibleBS = false; //Visibility of bounding sphere
 		bool m_bVisibleOBB = true; //Visibility of Oriented bounding box
 		bool m_bVisibleARBB = true; //Visibility of axis (Re)aligned bounding box
+
+		bool m_bHasCollisions = true; //Does this rigidbody have collisions by default
+		bool m_bIsKinematic = false; //Does the object respond to physics collisions
 
 		float m_fRadius = 0.0f; //Radius
 
@@ -139,6 +148,18 @@ namespace Simplex {
 		Output: ---
 		*/
 		void SetVisibleARBB(bool a_bVisibility);
+		/*
+		USAGE: Gets whether the entity collides with other entities
+		ARGUMENTS: ---
+		OUTPUT: Collision flag
+		*/
+		bool GetHasCollisions(void);
+		/*
+		USAGE: Sets whether the entity collides with other entities
+		ARGUMENTS: bool a_bHasCollisions -> flag for collision
+		OUTPUT: ---
+		*/
+		void SetHasCollisions(bool a_bHasCollisions);
 		/*
 		Usage: Gets radius
 		Arguments: ---

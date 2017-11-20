@@ -60,6 +60,8 @@ bool MyRigidBody::GetVisibleOBB(void) { return m_bVisibleOBB; }
 void MyRigidBody::SetVisibleOBB(bool a_bVisible) { m_bVisibleOBB = a_bVisible; }
 bool MyRigidBody::GetVisibleARBB(void) { return m_bVisibleARBB; }
 void MyRigidBody::SetVisibleARBB(bool a_bVisible) { m_bVisibleARBB = a_bVisible; }
+bool MyRigidBody::GetHasCollisions(void) { return m_bHasCollisions; }
+void MyRigidBody::SetHasCollisions(bool a_bHasCollisions) { m_bHasCollisions = a_bHasCollisions; }
 float MyRigidBody::GetRadius(void) { return m_fRadius; }
 vector3 MyRigidBody::GetColorColliding(void) { return m_v3ColorColliding; }
 vector3 MyRigidBody::GetColorNotColliding(void) { return m_v3ColorNotColliding; }
@@ -211,6 +213,10 @@ void MyRigidBody::ClearCollidingList(void) {
 	m_CollidingRBSet.clear();
 }
 bool MyRigidBody::IsColliding(MyRigidBody* const a_pOther) {
+	//If one or both objects does not have collisions, return false
+	if (!GetHasCollisions() || !a_pOther->GetHasCollisions())
+		return false;
+
 	//check if spheres are colliding as pre-test
 	bool bColliding = (glm::distance(GetCenterGlobal(), a_pOther->GetCenterGlobal()) < m_fRadius + a_pOther->m_fRadius);
 

@@ -107,12 +107,12 @@ void Simplex::MyEntityManager::SetHasCollisions(bool a_bHasCollisions, uint a_uI
 	if (m_entityList.size() == 0) {
 		return;
 	}
-	MyEntityManager::GetEntity(a_uIndex)->SetHasCollisions(a_bHasCollisions);
+	MyEntityManager::GetEntity(a_uIndex)->GetRigidBody()->SetHasCollisions(a_bHasCollisions);
 }
 void Simplex::MyEntityManager::SetHasCollisions(bool a_bHasCollisions, String a_sUniqueID) {
 	MyEntity* pTemp = MyEntity::GetEntity(a_sUniqueID);
 	if (pTemp) {
-		pTemp->SetHasCollisions(a_bHasCollisions);
+		pTemp->GetRigidBody()->SetHasCollisions(a_bHasCollisions);
 	}
 }
 void Simplex::MyEntityManager::SetModelMatrix(matrix4 a_m4ToWorld, uint a_uIndex)

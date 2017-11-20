@@ -23,7 +23,7 @@ void Application::ProcessMousePressed(sf::Event a_event) {
 		break;
 	case sf::Mouse::Button::Right:
 		gui.m_bMousePressed[2] = true;
-		m_bFPC = true;
+		m_bFPC = false;
 		break;
 	}
 
@@ -42,7 +42,7 @@ void Application::ProcessMouseReleased(sf::Event a_event) {
 		break;
 	case sf::Mouse::Button::Right:
 		gui.m_bMousePressed[2] = false;
-		m_bFPC = false;
+		m_bFPC = true;
 		break;
 	}
 
@@ -85,43 +85,9 @@ void Application::ProcessKeyReleased(sf::Event a_event) {
 	case sf::Keyboard::Escape:
 		m_bRunning = false;
 		break;
-	case sf::Keyboard::F1:
-		m_pCameraMngr->SetCameraMode(CAM_PERSP);
-		break;
-	case sf::Keyboard::F2:
-		m_pCameraMngr->SetCameraMode(CAM_ORTHO_Z);
-		break;
-	case sf::Keyboard::F3:
-		m_pCameraMngr->SetCameraMode(CAM_ORTHO_Y);
-		break;
-	case sf::Keyboard::F4:
-		m_pCameraMngr->SetCameraMode(CAM_ORTHO_X);
-		break;
 	case sf::Keyboard::F:
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
-		break;
-	case sf::Keyboard::Add:
-		++m_uActCont;
-		m_uActCont %= 8;
-		if (m_uControllerCount > 0) {
-			while (m_pController[m_uActCont]->uModel == SimplexController_NONE) {
-				++m_uActCont;
-				m_uActCont %= 8;
-			}
-		}
-		break;
-	case sf::Keyboard::Subtract:
-		--m_uActCont;
-		if (m_uActCont > 7)
-			m_uActCont = 7;
-		if (m_uControllerCount > 0) {
-			while (m_pController[m_uActCont]->uModel == SimplexController_NONE) {
-				--m_uActCont;
-				if (m_uActCont > 7)
-					m_uActCont = 7;
-			}
-		}
 		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
@@ -365,69 +331,47 @@ void Application::ProcessKeyboard(void) {
 	float fMultiplier = 1.0f;
 
 	if (bMultiplier)
-		fMultiplier = 5.0f;
+		fMultiplier = 3.0f;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_pCameraMngr->MoveForward(m_fMovementSpeed * fMultiplier);
+	fMultiplier *= 0.05;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_pCameraMngr->MoveForward(-m_fMovementSpeed * fMultiplier);
+	//Get axes on the ground plane based on camera orientation
+	vector3 camPos = m_pCameraMngr->GetPosition();
+	vector3 camForward = m_pCameraMngr->GetForward();
+	vector3 camUp = m_pCameraMngr->GetUpward();
+	vector3 camRight = glm::cross(camForward, AXIS_Y);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_pCameraMngr->MoveSideways(-m_fMovementSpeed * fMultiplier);
+	//Project the forward and right vectors onto the horizontal plane so the player can only move horizontally
+	vector3 moveAxisForward = glm::normalize(camForward - glm::dot(camForward, AXIS_Y)*AXIS_Y);
+	vector3 moveAxisRight = glm::normalize(camRight - glm::dot(camRight, AXIS_Y)*AXIS_Y);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
+	//Manipulate camera position based on keys pressed
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+		camPos += moveAxisForward*fMultiplier;
+	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+		camPos -= moveAxisForward*fMultiplier;
+	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		camPos -= moveAxisRight*fMultiplier;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		camPos += moveAxisRight*fMultiplier;
+	}
+
+	//Clamp the camPos to the bounds of the room
+	camPos.x = camPos.x > 13.0f ? 13.0f : camPos.x;
+	camPos.x = camPos.x < -13.0f ? -13.0f : camPos.x;
+	camPos.z = camPos.z > 13.0f ? 13.0f : camPos.z;
+	camPos.z = camPos.z < -13.0f ? -13.0f : camPos.z;
+
+	//Recalculate the camera's lookat matrix using the new position and the old forward/up vectors so they remain constant
+	m_pCameraMngr->SetPositionTargetAndUp(camPos, camPos + camForward, camUp);
+
 #pragma endregion
-	//move the creeper
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		m_v3Creeper.x -= 0.1f;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		m_v3Creeper.x += 0.1f;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		if (m_bModifier)
-			m_v3Creeper.z -= 0.1f;
-		else
-			m_v3Creeper.y += 0.1f;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		if (m_bModifier)
-			m_v3Creeper.z += 0.1f;
-		else
-			m_v3Creeper.y -= 0.1f;
-	}
-
-	//Orient the creeper
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)) {
-		if (m_bModifier)
-			m_qCreeper = m_qCreeper * glm::angleAxis(1.0f, AXIS_X);
-		else
-			m_qCreeper = m_qCreeper * glm::angleAxis(-1.0f, AXIS_X);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) {
-		if (m_bModifier)
-			m_qCreeper = m_qCreeper * glm::angleAxis(1.0f, AXIS_Y);
-		else
-			m_qCreeper = m_qCreeper * glm::angleAxis(-1.0f, AXIS_Y);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-		if (m_bModifier)
-			m_qCreeper = m_qCreeper * glm::angleAxis(1.0f, AXIS_Z);
-		else
-			m_qCreeper = m_qCreeper * glm::angleAxis(-1.0f, AXIS_Z);
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-		m_qCreeper = quaternion();
-	}
 }
 //Joystick
 void Application::ProcessJoystick(void) {

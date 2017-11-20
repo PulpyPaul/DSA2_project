@@ -18,16 +18,7 @@ Date: 2017/11
 namespace Simplex {
 	//Adding Application to the Simplex namespace
 	class Application {
-		vector3 m_v3Creeper; //position of the creeper
-		Model* m_pCreeper = nullptr; //model to display
-		Model* m_pSteve = nullptr; //model to display
-
-		quaternion m_qCreeper; //quaternion for the creeper
-
-		MyRigidBody* m_pCreeperRB = nullptr; //Rigid Body of the model
-		MyRigidBody* m_pSteveRB = nullptr; //Rigid Body of the model
-
-		String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //programmer
+		String m_sProgrammer = "Daniel Timko - det2948@rit.edu"; //programmer
 	private:
 		static ImGuiObject gui; //GUI object
 		bool m_bGUI_Main = true; //show Main GUI window?
@@ -43,7 +34,7 @@ namespace Simplex {
 		float m_fMovementSpeed = 0.1f; //how fast the camera will move
 
 		vector3 m_v3Mouse = vector3(); //position of the mouse in the window
-		bool m_bFPC = false;// First Person Camera flag
+		bool m_bFPC = true;// First Person Camera flag
 		bool m_bArcBall = false;// ArcBall flag
 		quaternion m_qArcBall; //ArcBall quaternion
 
