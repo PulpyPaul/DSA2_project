@@ -7,33 +7,41 @@ void Application::InitVariables(void) {
 		vector3(0.0f, 1.0f, 12.0f),	//Target
 		AXIS_Y);					//Up
 
-	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light(0 is reserved for global light)
+	//Add lights to the scene (light index 0 is reserved for global light)
+	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 0.0f), 1);
+	m_pLightMngr->SetIntensity(10.0f, 1);
 
-	////creeper
-	//m_pCreeper = new Model();
-	//m_pCreeper->Load("Minecraft\\Creeper.obj");
-	//m_pCreeperRB = new MyRigidBody(m_pCreeper->GetVertexList());
+	/*
+	Create Room bounds
 
-	////steve
-	//m_pSteve = new Model();
-	//m_pSteve->Load("Minecraft\\Steve.obj");
-	//m_pSteveRB = new MyRigidBody(m_pSteve->GetVertexList());
+	Ignore magic numbers.  They are just the trial-and-error tested positions for the walls, floor, and ceiling so that the room and ground are centered at <0, 0, 0>
+	*/
+	//Load the floor
+	m_pEntityMngr->AddEntity("FinalScene\\Floor.obj", "Floor");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, -1.2f, 1.0f)));
+	//Load the ceiling
+	m_pEntityMngr->AddEntity("FinalScene\\Ceiling.obj", "Ceiling");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 10.0f, 1.0f)));
+	//Load walls (no loop since we need to create unique IDs for each)
+	//Wall 0
+	m_pEntityMngr->AddEntity("FinalScene\\Walls.obj", "Wall0");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(14.0f, -0.2f, 0.0f)) * glm::scale(1.0f, 0.62f, 1.7f));
+	//Wall 1
+	m_pEntityMngr->AddEntity("FinalScene\\Walls.obj", "Wall1");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(-14.0f, -0.2f, 0.0f)) * glm::scale(1.0f, 0.62f, 1.7f));
+	//Wall 2
+	m_pEntityMngr->AddEntity("FinalScene\\Walls.obj", "Wall2");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, -0.2f, 14.0f)) * glm::scale(1.7f, 0.62f, 1.0f) * glm::rotate(IDENTITY_M4, 90.0f, AXIS_Y));
+	//Wall 3
+	m_pEntityMngr->AddEntity("FinalScene\\Walls.obj", "Wall3");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, -0.2f, -14.0f)) * glm::scale(1.7f, 0.62f, 1.0f) * glm::rotate(IDENTITY_M4, -90.0f, AXIS_Y));
 
-	//Floor
-	floorMod = new Model();
-	floorMod->Load("FinalScene\\Floor.obj");
-
-
-	//Creating Ceiling
-	ceilingMod = new Model();
-	ceilingMod->Load("FinalScene\\Ceiling.obj");
-
-	//Creating Walls
-	for (int i = 0; i < 4; i++) {
-		wallsMod.push_back(new Model());
-		wallsMod[i]->Load("FinalScene\\Walls.obj");
+	//Make bounding volumes for all entities invisible
+	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
 	}
-
 }
 void Application::Update(void) {
 	//Update the system so it knows how much time has passed since the last call
@@ -45,61 +53,13 @@ void Application::Update(void) {
 	//Is the first person camera active?
 	CameraRotation();
 
+	//Draw axes based on the floor
+	m_pMeshMngr->AddAxisToRenderList(IDENTITY_M4);
 
-	////Set model matrix to the creeper
-	//matrix4 mCreeper = glm::translate(m_v3Creeper + vector3(1.5,0.0f,0.0f)) * ToMatrix4(m_qCreeper) * ToMatrix4(m_qArcBall);
-	//m_pCreeper->SetModelMatrix(mCreeper);
-	//m_pCreeperRB->SetModelMatrix(mCreeper);
-	//m_pMeshMngr->AddAxisToRenderList(mCreeper);
-
-	////Set model matrix to Steve
-	//matrix4 mSteve = glm::translate(vector3(2.25f, 0.0f, 0.0f)); //* glm::rotate(IDENTITY_M4, -55.0f, AXIS_Z);
-	//m_pSteve->SetModelMatrix(mSteve);
-	//m_pSteveRB->SetModelMatrix(mSteve);
-	//m_pMeshMngr->AddAxisToRenderList(mSteve);
-
-
-	//Set model matrix to the Floor
-	matrix4 mFloor = glm::translate(vector3(0.0f, -1.0f, 0.0f));
-	floorMod->SetModelMatrix(mFloor);
-
-	//Set Model matrix for the ceiling
-	matrix4 mCeiling = glm::translate(vector3(0.0f, 10.0f, 0.0f));
-	ceilingMod->SetModelMatrix(mCeiling);
-
-	//Create Wall
-	matrix4 mWalls[4];
-	mWalls[0] = glm::translate(vector3(10.0f, 0.0f, 0.0f));
-	mWalls[1] = glm::translate(vector3(-10.0f, 0.0f, 0.0f));
-	mWalls[2] = glm::translate(vector3(5.0f, 0.0f, 10.0f)) * glm::rotate(IDENTITY_M4, 90.0f, AXIS_Y);
-	mWalls[3] = glm::translate(vector3(5.0f, 0.0f, -10.0f)) * glm::rotate(IDENTITY_M4, 90.0f, AXIS_Y);
-
-	for (int i = 0; i < 4; i++) {
-		wallsMod[i]->SetModelMatrix(mWalls[i]);
-	}
-
-	//bool bColliding = m_pCreeperRB->IsColliding(m_pSteveRB);
-
-	//m_pCreeper->AddToRenderList();
-	//m_pCreeperRB->AddToRenderList();
-	//m_pSteve->AddToRenderList();
-	//m_pSteveRB->AddToRenderList();
-
-	//Add floor to render list
-	floorMod->AddToRenderList();
-
-	ceilingMod->AddToRenderList();
-
-	//Add walls to render list
-	for (int i = 0; i < wallsMod.size(); i++) {
-		wallsMod[i]->AddToRenderList();
-	}
-
-	/*m_pMeshMngr->Print("Colliding: ");
-	if (bColliding)
-		m_pMeshMngr->PrintLine("YES!", C_RED);
-	else
-		m_pMeshMngr->PrintLine("no", C_YELLOW);*/
+	//Update the entity manager
+	m_pEntityMngr->Update();
+	//Add all objects to render list
+	m_pEntityMngr->AddEntityToRenderList(-1, true);
 }
 void Application::Display(void) {
 	// Clear the screen
@@ -122,28 +82,6 @@ void Application::Display(void) {
 }
 
 void Application::Release(void) {
-
-	//release the model
-	SafeDelete(m_pCreeper);
-
-	//release the rigid body for the model
-	SafeDelete(m_pCreeperRB);
-
-	//release the model
-	SafeDelete(m_pSteve);
-
-	//release the rigid body for the model
-	SafeDelete(m_pSteveRB);
-
-	//Release the floor Model
-	SafeDelete(floorMod);
-
-	//Release the Walls!
-	for (int i = 0; i < wallsMod.size(); i++) {
-		SafeDelete(wallsMod[i]);
-		wallsMod[i] = nullptr;
-	}
-
 	//release GUI
 	ShutdownGUI();
 }

@@ -1,6 +1,8 @@
 /*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2017/06
+Programmers:
+Daniel Timko (det2948@rit.edu)
+
+Date: 2017/11
 ----------------------------------------------*/
 #ifndef __APPLICATIONCLASS_H_
 #define __APPLICATIONCLASS_H_
@@ -18,10 +20,6 @@ namespace Simplex {
 		vector3 m_v3Creeper; //position of the creeper
 		Model* m_pCreeper = nullptr; //model to display
 		Model* m_pSteve = nullptr; //model to display
-
-		Model* floorMod = nullptr;
-		Model* ceilingMod = nullptr;
-		std::vector<Model*> wallsMod;
 
 		quaternion m_qCreeper; //quaternion for the creeper
 
@@ -57,6 +55,7 @@ namespace Simplex {
 		LightManager* m_pLightMngr = nullptr; //Light Manager of the system
 		MeshManager* m_pMeshMngr = nullptr; //Mesh Manager
 		CameraManager* m_pCameraMngr = nullptr; //Singleton for the camera manager
+		EntityManager* m_pEntityMngr = nullptr;
 		ControllerInput* m_pController[8]; //Controller
 		uint m_uActCont = 0; //Active Controller of the Application
 
