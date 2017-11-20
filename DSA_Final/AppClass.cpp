@@ -21,16 +21,17 @@ void Application::InitVariables(void) {
 
 	//Floor
 	floorMod = new Model();
-	floorMod->Load("FinalScene\\floor.obj");
+	floorMod->Load("FinalScene\\Floor.obj");
+
 
 	//Creating Ceiling
 	ceilingMod = new Model();
-	ceilingMod->Load("FinalScene\\floor.obj");
+	ceilingMod->Load("FinalScene\\Ceiling.obj");
 
 	//Creating Walls
 	for (int i = 0; i < 4; i++) {
 		wallsMod.push_back(new Model());
-		wallsMod[i]->Load("FinalScene\\walls.obj");
+		wallsMod[i]->Load("FinalScene\\Walls.obj");
 	}
 
 }
@@ -63,7 +64,7 @@ void Application::Update(void) {
 	floorMod->SetModelMatrix(mFloor);
 
 	//Set Model matrix for the ceiling
-	matrix4 mCeiling = glm::translate(vector3(0.0f, -1.0f, 0.0f));
+	matrix4 mCeiling = glm::translate(vector3(0.0f, 10.0f, 0.0f));
 	ceilingMod->SetModelMatrix(mCeiling);
 
 	//Create Wall
@@ -86,6 +87,8 @@ void Application::Update(void) {
 
 	//Add floor to render list
 	floorMod->AddToRenderList();
+
+	ceilingMod->AddToRenderList();
 
 	//Add walls to render list
 	for (int i = 0; i < wallsMod.size(); i++) {

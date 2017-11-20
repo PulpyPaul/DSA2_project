@@ -1,7 +1,8 @@
 # This file uses centimeters as units for non-parametric coordinates.
 
 mtllib Floor.mtl
-g default
+g floor
+usemtl floor_mat
 v -14.715726 0.178046 13.588789
 v 14.666300 0.178046 13.588789
 v -14.715726 1.178046 13.588789
@@ -48,9 +49,6 @@ vn -1.000000 0.000000 0.000000
 vn -1.000000 0.000000 0.000000
 vn -1.000000 0.000000 0.000000
 vn -1.000000 0.000000 0.000000
-s off
-g pCube1
-usemtl initialShadingGroup
 f 1/1/1 2/2/2 4/4/3 3/3/4
 f 3/3/5 4/4/6 6/6/7 5/5/8
 f 5/5/9 6/6/10 8/8/11 7/7/12
