@@ -16,15 +16,30 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{8e4b1616-c324-4a7c-ad87-7a97c6aedb32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{cac8fa64-04a8-4dfb-a091-21946e240345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{4cc037e4-7ee7-4fbd-a3db-2e45ef730d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{34fca178-1713-47da-9aaf-981dc55ee157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{8845d32b-4175-4bc3-9fb9-725de5cca035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{fda88bbc-0728-4771-a75b-b698933e84b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{fd568425-ce37-406e-9261-912156a4ff2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppClass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AppClassControls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AppClassMain.cpp">
@@ -42,11 +57,20 @@
     <ClCompile Include="AppClassGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ControllerConfiguration.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Input\AppClassControls.cpp">
+      <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="MyRigidBody.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Input\ControllerConfiguration.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\MyRigidBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\MyEntity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\MyEntityManager.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,14 +95,20 @@
     <ClInclude Include="..\res\resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControllerConfiguration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MyRigidBody.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Input\ControllerConfiguration.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\MyRigidBody.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\MyEntity.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\MyEntityManager.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

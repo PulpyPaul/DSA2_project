@@ -34,6 +34,10 @@ Application::~Application(void) {
 
 	// Release the Simplex singletons
 	Simplex::ReleaseAllSingletons();
+
+	//Release custom singletons
+	MyEntityManager::ReleaseInstance();
+
 	SafeDelete(m_pWindow);
 }
 void Application::InitControllers(void) {
@@ -224,7 +228,7 @@ void Application::Init(String a_sApplicationName, uint a_uWidth, uint a_uHeight,
 	m_pMeshMngr = MeshManager::GetInstance();
 
 	//Init Entity Manager
-	m_pEntityMngr = EntityManager::GetInstance();
+	m_pEntityMngr = MyEntityManager::GetInstance();
 
 	//Init sizes
 	Reshape();

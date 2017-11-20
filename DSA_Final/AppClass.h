@@ -9,10 +9,11 @@ Date: 2017/11
 
 #include "Definitions.h"
 
-#include "ControllerConfiguration.h"
+#include "Input\ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
 
-#include "MyRigidBody.h"
+#include "Physics\MyRigidBody.h"
+#include "Entities\MyEntityManager.h"
 
 namespace Simplex {
 	//Adding Application to the Simplex namespace
@@ -55,7 +56,7 @@ namespace Simplex {
 		LightManager* m_pLightMngr = nullptr; //Light Manager of the system
 		MeshManager* m_pMeshMngr = nullptr; //Mesh Manager
 		CameraManager* m_pCameraMngr = nullptr; //Singleton for the camera manager
-		EntityManager* m_pEntityMngr = nullptr;
+		MyEntityManager* m_pEntityMngr = nullptr;
 		ControllerInput* m_pController[8]; //Controller
 		uint m_uActCont = 0; //Active Controller of the Application
 
@@ -128,6 +129,12 @@ namespace Simplex {
 		OUTPUT: ---
 		*/
 		void ReadConfig(void);
+		/*
+		USAGE: Helper function that loads floor/ceiling/wall models and puts them into the scene
+		ARGUMENTS: ---
+		OUTPUT: ---
+		*/
+		void CreateRoom(void);
 		/*
 		USAGE: Writes the configuration of the application to a file
 		ARGUMENTS: ---

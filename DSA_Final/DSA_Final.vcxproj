@@ -102,12 +102,14 @@ xcopy "$(SolutionDir)include\Simplex\Shaders" "$(SolutionDir)_Binary\Shaders" /y
     <ClCompile Include="..\include\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\include\imgui\imgui_draw.cpp" />
     <ClCompile Include="AppClass.cpp" />
-    <ClCompile Include="AppClassControls.cpp" />
     <ClCompile Include="AppClassGUI.cpp" />
     <ClCompile Include="AppClassMain.cpp" />
-    <ClCompile Include="ControllerConfiguration.cpp" />
+    <ClCompile Include="Entities\MyEntity.cpp" />
+    <ClCompile Include="Entities\MyEntityManager.cpp" />
+    <ClCompile Include="Input\AppClassControls.cpp" />
+    <ClCompile Include="Input\ControllerConfiguration.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MyRigidBody.cpp" />
+    <ClCompile Include="Physics\MyRigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\imgui\imconfig.h" />
@@ -116,10 +118,12 @@ xcopy "$(SolutionDir)include\Simplex\Shaders" "$(SolutionDir)_Binary\Shaders" /y
     <ClInclude Include="..\include\imgui\imgui_internal.h" />
     <ClInclude Include="..\res\resource.h" />
     <ClInclude Include="AppClass.h" />
-    <ClInclude Include="ControllerConfiguration.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="Entities\MyEntity.h" />
+    <ClInclude Include="Entities\MyEntityManager.h" />
+    <ClInclude Include="Input\ControllerConfiguration.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="MyRigidBody.h" />
+    <ClInclude Include="Physics\MyRigidBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc" />
