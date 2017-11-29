@@ -5,9 +5,6 @@ MyEntityManager* MyEntityManager::m_pInstance = nullptr;
 void MyEntityManager::Init(void)
 {
 }
-void Simplex::MyEntityManager::MoveEntity(vector3 direction)
-{
-}
 void MyEntityManager::Release(void)
 {
 	for (uint entity = 0; entity < m_uEntityCount; entity++) {
@@ -141,10 +138,17 @@ void Simplex::MyEntityManager::Update(void)
 			m_entityList[i]->IsColliding(m_entityList[j]);
 		}
 
-		if (m_entityList[i]->GetUniqueID() == "Sun") {
-			vector3 direction = m_entityList[i]->GetDirectionMovement();
+		// Updates movement of darts
+		if (m_entityList[i + 1]->GetDirectionMovement() != vector3(0.0f, 0.0f, 0.0f)) {
+			
+			// Gets the movement direction and scales the speed
+			vector3 direction = m_entityList[i + 1]->GetDirectionMovement();
 			direction = glm::normalize(direction);
-			m_entityList[i]->SetModelMatrix(glm::translate(direction));
+			direction *= 0.6f;
+			
+			// Updates the model matrix
+			matrix4 modelMatrix = m_entityList[i + 1]->GetModelMatrix();
+			m_entityList[i + 1]->SetModelMatrix(modelMatrix * glm::translate(direction));
 		}
 	}
 }

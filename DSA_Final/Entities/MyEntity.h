@@ -20,7 +20,7 @@ class MyEntity
 	bool m_bHasCollisions = true; //Does this object collide with other objects
 	String m_sUniqueID = ""; //Unique identifier name
 	
-	vector3 direction;		// contains the direction to move the object
+	vector3 direction = vector3(0.0f, 0.0f, 0.0f);		// contains the direction to move the object
 
 	Model* m_pModel = nullptr; //Model associated with this Entity
 	MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this Entity
