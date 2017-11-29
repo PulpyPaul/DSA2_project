@@ -201,6 +201,12 @@ private:
 	Output: ---
 	*/
 	void Init(void);
+	/*
+	Usage: moves an entity towards a given direction
+	Arguements: Vector 3 - direction
+	Output: ---
+	*/
+	void MoveEntity(vector3 direction);
 };//class
 
 } //namespace Simplex

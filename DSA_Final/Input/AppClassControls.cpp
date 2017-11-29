@@ -16,6 +16,9 @@ void Application::ProcessMousePressed(sf::Event a_event) {
 	default: break;
 	case sf::Mouse::Button::Left:
 		gui.m_bMousePressed[0] = true;
+		m_pEntityMngr->AddEntity("Planets\\00_Sun.obj", "Sun");
+		m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityIndex("Sun"))->SetDirectionMovement(m_pCameraMngr->GetForward());
+		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1)) * glm::scale(vector3(0.05f, 0.05f, 0.05f)));
 		break;
 	case sf::Mouse::Button::Middle:
 		gui.m_bMousePressed[1] = true;

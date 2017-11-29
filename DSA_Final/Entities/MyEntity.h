@@ -19,6 +19,8 @@ class MyEntity
 	bool m_bSetAxis = false; //render axis flag
 	bool m_bHasCollisions = true; //Does this object collide with other objects
 	String m_sUniqueID = ""; //Unique identifier name
+	
+	vector3 direction;		// contains the direction to move the object
 
 	Model* m_pModel = nullptr; //Model associated with this Entity
 	MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this Entity
@@ -67,6 +69,18 @@ public:
 	OUTPUT: model to world matrix
 	*/
 	matrix4 GetModelMatrix(void);
+	/*
+	USAGE: Sets a direction vector to apply basic kinematics
+	ARGUEMENTS: Vector 3 - direction
+	OUTPUT: ---
+	*/
+	void SetDirectionMovement(vector3 dir);
+	/*
+	USAGE: Gets the direction of the movement
+	ARGUEMENTS: ---
+	OUTPUT: Vector 3 - direction of the movement
+	*/
+	vector3 GetDirectionMovement(void);
 	/*
 	USAGE: Sets the model matrix associated with this entity
 	ARGUMENTS: matrix4 a_m4ToWorld -> model matrix to set

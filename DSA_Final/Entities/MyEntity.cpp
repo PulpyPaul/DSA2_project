@@ -3,6 +3,8 @@ using namespace Simplex;
 std::map<String, MyEntity*> MyEntity::m_IDMap;
 //  Accessors
 matrix4 Simplex::MyEntity::GetModelMatrix(void){ return m_m4ToWorld; }
+void Simplex::MyEntity::SetDirectionMovement(vector3 dir) { direction = dir; }
+vector3 Simplex::MyEntity::GetDirectionMovement(void) {	return direction; }
 void Simplex::MyEntity::SetModelMatrix(matrix4 a_m4ToWorld)
 {
 	if (!m_bInMemory)

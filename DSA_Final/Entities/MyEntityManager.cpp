@@ -5,6 +5,9 @@ MyEntityManager* MyEntityManager::m_pInstance = nullptr;
 void MyEntityManager::Init(void)
 {
 }
+void Simplex::MyEntityManager::MoveEntity(vector3 direction)
+{
+}
 void MyEntityManager::Release(void)
 {
 	for (uint entity = 0; entity < m_uEntityCount; entity++) {
@@ -136,6 +139,12 @@ void Simplex::MyEntityManager::Update(void)
 	for (uint i = 0; i < m_uEntityCount - 1; i++) {
 		for (uint j = i + 1; j < m_uEntityCount; j++) {
 			m_entityList[i]->IsColliding(m_entityList[j]);
+		}
+
+		if (m_entityList[i]->GetUniqueID() == "Sun") {
+			vector3 direction = m_entityList[i]->GetDirectionMovement();
+			direction = glm::normalize(direction);
+			m_entityList[i]->SetModelMatrix(glm::translate(direction));
 		}
 	}
 }
