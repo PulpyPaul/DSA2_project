@@ -18,11 +18,11 @@ void Application::InitVariables(void) {
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 2.0f, 0.0f)));
 
 	//Make bounding volumes for all entities invisible
-	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
-	}
+	//for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
+	//}
 }
 void Application::Update(void) {
 	//Update the system so it knows how much time has passed since the last call

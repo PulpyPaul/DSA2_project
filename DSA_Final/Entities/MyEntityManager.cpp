@@ -135,7 +135,10 @@ void Simplex::MyEntityManager::Update(void)
 {
 	for (uint i = 0; i < m_uEntityCount - 1; i++) {
 		for (uint j = i + 1; j < m_uEntityCount; j++) {
-			m_entityList[i]->IsColliding(m_entityList[j]);
+			if (m_entityList[i]->IsColliding(m_entityList[j]))
+			{
+				m_entityList[j]->SetDirectionMovement(vector3(0.0f, 0.0f, 0.0f));
+			}	
 		}
 
 		// Updates movement of darts
@@ -150,6 +153,7 @@ void Simplex::MyEntityManager::Update(void)
 			matrix4 modelMatrix = m_entityList[i + 1]->GetModelMatrix();
 			m_entityList[i + 1]->SetModelMatrix(modelMatrix * glm::translate(direction));
 		}
+
 	}
 }
 void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID)
