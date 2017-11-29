@@ -14,6 +14,9 @@ void Application::InitVariables(void) {
 	//Create the room
 	CreateRoom();
 
+	m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 2.0f, 0.0f)));
+
 	//Make bounding volumes for all entities invisible
 	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
 		m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
