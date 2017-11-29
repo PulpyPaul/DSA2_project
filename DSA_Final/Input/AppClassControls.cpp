@@ -12,13 +12,33 @@ void Application::ProcessMouseMovement(sf::Event a_event) {
 	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);
 }
 void Application::ProcessMousePressed(sf::Event a_event) {
+
+	vector3 camForward;
+	vector3 camUp;
+	vector3 camRight;
+
+	matrix4 rotMat;
+
 	switch (a_event.mouseButton.button) {
 	default: break;
 	case sf::Mouse::Button::Left:
 		gui.m_bMousePressed[0] = true;
 		m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
-		m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityCount())->SetDirectionMovement(m_pCameraMngr->GetForward());
-		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1)) * glm::scale(vector3(0.05f, 0.05f, 0.05f)));
+		m_pEntityMngr->GetEntity(m_pEntityMngr->GetEntityCount())->SetDirectionMovement(-AXIS_Y);
+
+		//Get rotation matrix
+		camForward = m_pCameraMngr->GetForward();
+		camRight = m_pCameraMngr->GetRightward();
+		camUp = glm::cross(camForward, camRight);
+
+		rotMat = matrix4(
+			camRight.x,    camRight.y,    camRight.z,    0.0f,
+			-camForward.x, -camForward.y, -camForward.z, 0.0f,
+			camUp.x,       camUp.y,       camUp.z,       0.0f,
+			0.0f,          0.0f,          0.0f,          1.0f
+		);
+
+		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1) + camForward*2.0f) * rotMat * glm::scale(vector3(0.05f, 0.05f, 0.05f)));
 		break;
 	case sf::Mouse::Button::Middle:
 		gui.m_bMousePressed[1] = true;
