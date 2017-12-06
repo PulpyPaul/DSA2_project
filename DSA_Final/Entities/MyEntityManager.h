@@ -14,6 +14,8 @@ namespace Simplex
 class MyEntityManager
 {
 	uint m_uEntityCount = 0; //number of elements in the list
+	int dart_Index;			// the index that the darts start at in the entity list
+	int curr_Dart_Index;	// index that is used to represent the current dart
 	static MyEntityManager* m_pInstance; // Singleton pointer
 	std::vector<MyEntity*> m_entityList; //entities list
 public:
@@ -163,6 +165,14 @@ public:
 	OUTPUT: ---
 	*/
 	void AddEntityToRenderList(String a_sUniqueID, bool a_bRigidBody = false);
+
+	int getDartIndex(void);
+
+	void setDartIndex(int index);
+
+	int getCurrDartIndex(void);
+
+	void setCurrDartIndex(int index);
 	
 private:
 	/*

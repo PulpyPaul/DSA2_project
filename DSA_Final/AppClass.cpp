@@ -14,9 +14,15 @@ void Application::InitVariables(void) {
 	//Create the room
 	CreateRoom();
 
-	m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 2.0f, 0.0f)));
+	m_pEntityMngr->setDartIndex(m_pEntityMngr->GetEntityCount());
+	m_pEntityMngr->setCurrDartIndex(m_pEntityMngr->GetEntityCount());
 
+	// Creates 20 Darts in the entity manager
+	for (uint i = 0; i < 20; i++) {
+		m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
+		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(1000.0f, 1000.0f * i, 0.0f)));
+	}
+	
 	//Make bounding volumes for all entities invisible
 	//for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
 	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);

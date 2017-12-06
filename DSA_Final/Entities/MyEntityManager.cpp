@@ -147,7 +147,7 @@ void Simplex::MyEntityManager::Update(void)
 			// Gets the movement direction and scales the speed
 			vector3 direction = m_entityList[i + 1]->GetDirectionMovement();
 			direction = glm::normalize(direction);
-			direction *= 0.6f;
+			direction *= 5.0f;
 			
 			// Updates the model matrix
 			matrix4 modelMatrix = m_entityList[i + 1]->GetModelMatrix();
@@ -222,4 +222,24 @@ void Simplex::MyEntityManager::AddEntityToRenderList(String a_sUniqueID, bool a_
 	if (pTemp) {
 		pTemp->AddToRenderList(a_bRigidBody);
 	}
+}
+
+int Simplex::MyEntityManager::getDartIndex(void)
+{
+	return dart_Index;
+}
+
+void Simplex::MyEntityManager::setDartIndex(int index)
+{
+	dart_Index = index;
+}
+
+int Simplex::MyEntityManager::getCurrDartIndex(void)
+{
+	return curr_Dart_Index;
+}
+
+void Simplex::MyEntityManager::setCurrDartIndex(int index)
+{
+	curr_Dart_Index = index;
 }
