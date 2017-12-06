@@ -119,6 +119,17 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix) {
 
 	//we calculate the distance between min and max vectors
 	m_v3ARBBSize = m_v3MaxG - m_v3MinG;
+
+	//Re-calculate the global scale of the object
+	m_fXScale = glm::length(vector3(m_m4ToWorld[0][0], m_m4ToWorld[0][1], m_m4ToWorld[0][2]));
+	m_fYScale = glm::length(vector3(m_m4ToWorld[1][0], m_m4ToWorld[1][1], m_m4ToWorld[1][2]));
+	m_fZScale = glm::length(vector3(m_m4ToWorld[2][0], m_m4ToWorld[2][1], m_m4ToWorld[2][2]));
+
+	//Calculate the global half width
+	m_v3GHalfWidth = (m_v3MaxL - m_v3MinL) / 2.0f;
+	m_v3GHalfWidth.x *= m_fXScale;
+	m_v3GHalfWidth.y *= m_fYScale;
+	m_v3GHalfWidth.z *= m_fZScale;
 }
 //The big 3
 MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList) {
@@ -289,8 +300,8 @@ uint MyRigidBody::SAT(MyRigidBody* const a_pOther) {
 	b.c = a_pOther->GetCenterGlobal();
 
 	//Get OBB half widths
-	a.e = GetHalfWidth();
-	b.e = a_pOther->GetHalfWidth();
+	a.e = m_v3GHalfWidth;
+	b.e = a_pOther->m_v3GHalfWidth;
 
 	//Get OBB local axes in world space
 	//Local axes of A (a.u)
