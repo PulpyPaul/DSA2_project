@@ -22,6 +22,13 @@ void Application::InitVariables(void) {
 		m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
 		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(1000.0f, 1000.0f * i, 0.0f)));
 	}
+
+	m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar");
+	m_pEntityMngr->GetRigidBody("Bar")->SetHasCollisions(true);
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 0.0f, 0.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f));
+
+	m_pEntityMngr->AddEntity("FinalScene\\Target.obj", "Target");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 1.0f, 13.5f)) * glm::scale(0.005f, 0.005f, 0.005f));
 	
 	//Make bounding volumes for all entities invisible
 	//for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {

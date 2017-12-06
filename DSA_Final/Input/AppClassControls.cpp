@@ -23,12 +23,16 @@ void Application::ProcessMousePressed(sf::Event a_event) {
 	default: break;
 	case sf::Mouse::Button::Left:
 		gui.m_bMousePressed[0] = true;
-		if (m_pEntityMngr->getCurrDartIndex() > m_pEntityMngr->getDartIndex() + 20) {
+
+		// Makes sure the dart index stays in range
+		if (m_pEntityMngr->getCurrDartIndex() > m_pEntityMngr->getDartIndex() + 19) {
 			m_pEntityMngr->setCurrDartIndex(m_pEntityMngr->getDartIndex());
 		}
+
+		// Sets the movement direction for the dart
 		m_pEntityMngr->GetEntity(m_pEntityMngr->getCurrDartIndex())->SetDirectionMovement(-AXIS_Y);
 
-		//Get rotation matrix
+		//Get rotation matrix for the dart
 		camForward = m_pCameraMngr->GetForward();
 		camRight = m_pCameraMngr->GetRightward();
 		camUp = glm::cross(camForward, camRight);
@@ -40,7 +44,10 @@ void Application::ProcessMousePressed(sf::Event a_event) {
 			0.0f,          0.0f,          0.0f,          1.0f
 		);
 
+		// Sets the ModelMatrix for the dart
 		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1) + camForward*2.0f) * rotMat * glm::scale(vector3(0.05f, 0.05f, 0.05f)), m_pEntityMngr->getCurrDartIndex());
+		
+		// Updates the current index 
 		m_pEntityMngr->setCurrDartIndex(m_pEntityMngr->getCurrDartIndex() + 1);
 		break;
 	case sf::Mouse::Button::Middle:
