@@ -40,11 +40,11 @@ void Application::InitVariables(void) {
 	}
 
 	//Make bounding volumes for all entities invisible
-	//for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
-	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
-	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
-	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
-	//}
+	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
+		m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
+	}
 }
 void Application::Update(void) {
 	
@@ -78,9 +78,6 @@ void Application::Update(void) {
 	//Is the first person camera active?
 	CameraRotation();
 
-	//Draw axes based on the floor
-	m_pMeshMngr->AddAxisToRenderList(IDENTITY_M4);
-
 	//Create the octree
 	SafeDelete(rootOct);
 	rootOct = new Octree();
@@ -111,7 +108,12 @@ void Application::Display(void) {
 	//draw gui
 	DrawGUI();
 
-	rootOct->Display();
+	if (displayDebug) {
+		//Draw axes based on the floor
+		m_pMeshMngr->AddAxisToRenderList(IDENTITY_M4);
+		//Draw octree
+		rootOct->Display();
+	}
 
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();

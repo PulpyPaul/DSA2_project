@@ -122,6 +122,12 @@ void Application::ProcessKeyReleased(sf::Event a_event) {
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
+	case sf::Keyboard::Return:
+		displayOctree = !displayOctree;
+		for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+			m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(displayOctree);
+		}
+		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
 		m_bModifier = false;
