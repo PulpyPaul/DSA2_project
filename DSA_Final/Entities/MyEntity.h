@@ -9,153 +9,163 @@ Date: 2017/07
 
 #include "..\Physics\MyRigidBody.h"
 
-namespace Simplex
-{
+namespace Simplex {
 
 //System Class
-class MyEntity
-{
-	bool m_bInMemory = false; //loaded flag
-	bool m_bSetAxis = false; //render axis flag
-	bool m_bHasCollisions = true; //Does this object collide with other objects
-	String m_sUniqueID = ""; //Unique identifier name
-	
-	vector3 direction = vector3(0.0f, 0.0f, 0.0f);		// contains the direction to move the object
+	class MyEntity {
+		bool m_bInMemory = false; //loaded flag
+		bool m_bSetAxis = false; //render axis flag
+		bool m_bHasCollisions = true; //Does this object collide with other objects
+		String m_sUniqueID = ""; //Unique identifier name
 
-	Model* m_pModel = nullptr; //Model associated with this Entity
-	MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this Entity
+		vector3 direction = vector3(0.0f, 0.0f, 0.0f);		// contains the direction to move the object
 
-	matrix4 m_m4ToWorld = IDENTITY_M4; //Model matrix associated with this Entity
-	MeshManager* m_pMeshMngr = nullptr; //For rendering shapes
+		Model* m_pModel = nullptr; //Model associated with this Entity
+		MyRigidBody* m_pRigidBody = nullptr; //Rigid Body associated with this Entity
 
-	static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
+		matrix4 m_m4ToWorld = IDENTITY_M4; //Model matrix associated with this Entity
+		MeshManager* m_pMeshMngr = nullptr; //For rendering shapes
 
-public:
-	/*
-	Usage: Constructor that specifies the name attached to the Entity
-	Arguments:
-	-	String a_sFileName -> Name of the model to load
-	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
-	Output: class object instance
-	*/
-	MyEntity(String a_sFileName, String a_sUniqueID = "NA");
-	/*
-	Usage: Copy Constructor
-	Arguments: class object to copy
-	Output: class object instance
-	*/
-	MyEntity(MyEntity const& other);
-	/*
-	Usage: Copy Assignment Operator
-	Arguments: class object to copy
-	Output: ---
-	*/
-	MyEntity& operator=(MyEntity const& other);
-	/*
-	Usage: Destructor
-	Arguments: ---
-	Output: ---
-	*/
-	~MyEntity(void);
-	/*
-	Usage: Changes object contents for other object's
-	Arguments: other -> object to swap content from
-	Output: ---
-	*/
-	void Swap(MyEntity& other);
-	/*
-	USAGE: Gets the model matrix associated with this entity
-	ARGUMENTS: ---
-	OUTPUT: model to world matrix
-	*/
-	matrix4 GetModelMatrix(void);
-	/*
-	USAGE: Sets a direction vector to apply basic kinematics
-	ARGUEMENTS: Vector 3 - direction
-	OUTPUT: ---
-	*/
-	void SetDirectionMovement(vector3 dir);
-	/*
-	USAGE: Gets the direction of the movement
-	ARGUEMENTS: ---
-	OUTPUT: Vector 3 - direction of the movement
-	*/
-	vector3 GetDirectionMovement(void);
-	/*
-	USAGE: Sets the model matrix associated with this entity
-	ARGUMENTS: matrix4 a_m4ToWorld -> model matrix to set
-	OUTPUT: ---
-	*/
-	void SetModelMatrix(matrix4 a_m4ToWorld);
-	/*
-	USAGE: Gets the model associated with this entity
-	ARGUMENTS: ---
-	OUTPUT: Model
-	*/
-	Model* GetModel(void);
-	/*
-	USAGE: Gets the Rigid Body associated with this entity
-	ARGUMENTS: ---
-	OUTPUT: Rigid Body
-	*/
-	MyRigidBody* GetRigidBody(void);
-	/*
-	USAGE: Will reply to the question, is the Entity Initialized?
-	ARGUMENTS: ---
-	OUTPUT: initialized?
-	*/
-	bool IsInitialized(void);
-	/*
-	USAGE: Adds the entity to the render list
-	ARGUMENTS: ---
-	OUTPUT: ---
-	*/
-	void AddToRenderList(bool a_bDrawRigidBody = false);
-	/*
-	USAGE: Tells if this entity is colliding with the incoming one
-	ARGUMENTS: MyEntity* const other -> inspected entity
-	OUTPUT: are they colliding?
-	*/
-	bool IsColliding(MyEntity* const other);
-	/*
-	USAGE: Gets the Entity specified by unique ID, nullptr if not exists
-	ARGUMENTS: String a_sUniqueID -> unique ID if the queried entity
-	OUTPUT: Entity specified by unique ID, nullptr if not exists
-	*/
-	static MyEntity* GetEntity(String a_sUniqueID);
-	/*
-	USAGE: Will generate a unique id based on the name provided
-	ARGUMENTS: String& a_sUniqueID -> desired name
-	OUTPUT: will output though the argument
-	*/
-	void GenUniqueID(String& a_sUniqueID);
-	/*
-	USAGE: Gets the Unique ID name of this model
-	ARGUMENTS: ---
-	OUTPUT: ---
-	*/
-	String GetUniqueID(void);
-	/*
-	USAGE: Sets the visibility of the axis of this Entity
-	ARGUMENTS: bool a_bSetAxis = true -> axis visible?
-	OUTPUT: ---
-	*/
-	void SetAxisVisible(bool a_bSetAxis = true);
+		static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
 
-private:
-	/*
-	Usage: Deallocates member fields
-	Arguments: ---
-	Output: ---
-	*/
-	void Release(void);
-	/*
-	Usage: Allocates member fields
-	Arguments: ---
-	Output: ---
-	*/
-	void Init(void);
-};//class
+		uint m_uOctantCount = 0;
+		uint* m_pOctants = nullptr;
+
+	public:
+		/*
+		Usage: Constructor that specifies the name attached to the Entity
+		Arguments:
+		-	String a_sFileName -> Name of the model to load
+		-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
+		Output: class object instance
+		*/
+		MyEntity(String a_sFileName, String a_sUniqueID = "NA");
+		/*
+		Usage: Copy Constructor
+		Arguments: class object to copy
+		Output: class object instance
+		*/
+		MyEntity(MyEntity const& other);
+		/*
+		Usage: Copy Assignment Operator
+		Arguments: class object to copy
+		Output: ---
+		*/
+		MyEntity& operator=(MyEntity const& other);
+		/*
+		Usage: Destructor
+		Arguments: ---
+		Output: ---
+		*/
+		~MyEntity(void);
+		/*
+		Usage: Changes object contents for other object's
+		Arguments: other -> object to swap content from
+		Output: ---
+		*/
+		void Swap(MyEntity& other);
+		/*
+		USAGE: Gets the model matrix associated with this entity
+		ARGUMENTS: ---
+		OUTPUT: model to world matrix
+		*/
+		matrix4 GetModelMatrix(void);
+		/*
+		USAGE: Sets a direction vector to apply basic kinematics
+		ARGUEMENTS: Vector 3 - direction
+		OUTPUT: ---
+		*/
+		void SetDirectionMovement(vector3 dir);
+		/*
+		USAGE: Gets the direction of the movement
+		ARGUEMENTS: ---
+		OUTPUT: Vector 3 - direction of the movement
+		*/
+		vector3 GetDirectionMovement(void);
+		/*
+		USAGE: Sets the model matrix associated with this entity
+		ARGUMENTS: matrix4 a_m4ToWorld -> model matrix to set
+		OUTPUT: ---
+		*/
+		void SetModelMatrix(matrix4 a_m4ToWorld);
+		bool GetHasChanged(void);
+		void ChangesAccepted(void);
+		/*
+		USAGE: Gets the model associated with this entity
+		ARGUMENTS: ---
+		OUTPUT: Model
+		*/
+		Model* GetModel(void);
+		/*
+		USAGE: Gets the Rigid Body associated with this entity
+		ARGUMENTS: ---
+		OUTPUT: Rigid Body
+		*/
+		MyRigidBody* GetRigidBody(void);
+		/*
+		USAGE: Will reply to the question, is the Entity Initialized?
+		ARGUMENTS: ---
+		OUTPUT: initialized?
+		*/
+		bool IsInitialized(void);
+		/*
+		USAGE: Adds the entity to the render list
+		ARGUMENTS: ---
+		OUTPUT: ---
+		*/
+		void AddToRenderList(bool a_bDrawRigidBody = false);
+		/*
+		USAGE: Tells if this entity is colliding with the incoming one
+		ARGUMENTS: MyEntity* const other -> inspected entity
+		OUTPUT: are they colliding?
+		*/
+		bool IsColliding(MyEntity* const other);
+		/*
+		USAGE: Gets the Entity specified by unique ID, nullptr if not exists
+		ARGUMENTS: String a_sUniqueID -> unique ID if the queried entity
+		OUTPUT: Entity specified by unique ID, nullptr if not exists
+		*/
+		static MyEntity* GetEntity(String a_sUniqueID);
+		/*
+		USAGE: Will generate a unique id based on the name provided
+		ARGUMENTS: String& a_sUniqueID -> desired name
+		OUTPUT: will output though the argument
+		*/
+		void GenUniqueID(String& a_sUniqueID);
+		/*
+		USAGE: Gets the Unique ID name of this model
+		ARGUMENTS: ---
+		OUTPUT: ---
+		*/
+		String GetUniqueID(void);
+		/*
+		USAGE: Sets the visibility of the axis of this Entity
+		ARGUMENTS: bool a_bSetAxis = true -> axis visible?
+		OUTPUT: ---
+		*/
+		void SetAxisVisible(bool a_bSetAxis = true);
+
+		void AddOctant(uint octantID);
+		void ClearOctantList();
+		void RemoveOctant(uint octantID);
+		bool SharesOctant(MyEntity* const other);
+		bool HasOctant(uint octantID);
+		void SortOctants(void);
+
+	private:
+		/*
+		Usage: Deallocates member fields
+		Arguments: ---
+		Output: ---
+		*/
+		void Release(void);
+		/*
+		Usage: Allocates member fields
+		Arguments: ---
+		Output: ---
+		*/
+		void Init(void);
+	};//class
 
 } //namespace Simplex
 

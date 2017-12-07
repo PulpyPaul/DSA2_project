@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{fd568425-ce37-406e-9261-912156a4ff2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Octree">
+      <UniqueIdentifier>{049524fd-8edd-41cd-ba39-1f2f67231c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Octree">
+      <UniqueIdentifier>{ad9aa3c1-c29c-46a7-95af-e84763d9ceda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -72,6 +78,9 @@
     <ClCompile Include="Entities\MyEntityManager.cpp">
       <Filter>Source Files\Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Octree\Octree.cpp">
+      <Filter>Source Files\Octree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -109,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Entities\MyEntityManager.h">
       <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Octree\Octree.h">
+      <Filter>Header Files\Octree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

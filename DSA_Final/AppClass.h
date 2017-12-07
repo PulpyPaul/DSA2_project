@@ -15,6 +15,8 @@ Date: 2017/11
 #include "Physics\MyRigidBody.h"
 #include "Entities\MyEntityManager.h"
 
+#include "Octree/Octree.h"
+
 namespace Simplex {
 	//Adding Application to the Simplex namespace
 	class Application {
@@ -58,6 +60,8 @@ namespace Simplex {
 		std::vector<vector3> targetLocations;
 		int score;
 		int locationIndex;
+
+		Octree* rootOct;
 
 	public:
 #pragma region Constructor / Run / Destructor

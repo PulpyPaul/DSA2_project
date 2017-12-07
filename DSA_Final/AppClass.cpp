@@ -81,6 +81,14 @@ void Application::Update(void) {
 	//Draw axes based on the floor
 	m_pMeshMngr->AddAxisToRenderList(IDENTITY_M4);
 
+	//Create the octree
+	SafeDelete(rootOct);
+	rootOct = new Octree();
+	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+		Octree::s_qToInsert.push_back(i);
+	}
+	rootOct->UpdateTree();
+
 	//Update the entity manager
 	m_pEntityMngr->Update();
 
@@ -102,6 +110,8 @@ void Application::Display(void) {
 
 	//draw gui
 	DrawGUI();
+
+	rootOct->Display();
 
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();

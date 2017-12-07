@@ -43,6 +43,7 @@ namespace Simplex {
 		vector3 m_v3ARBBSize = ZERO_V3; //size of the Axis (Re)Alligned Bounding Box
 
 		matrix4 m_m4ToWorld = IDENTITY_M4; //Matrix that will take us from local to world coordinate
+		bool m_bHasChanged = false; //Has the rigidbody changed in any way?
 
 		float m_fXScale = 0.0f; //global scale along the x axis
 		float m_fYScale = 0.0f; //global scale along the y axis
@@ -243,6 +244,18 @@ namespace Simplex {
 		Output: model to world matrix
 		*/
 		matrix4 GetModelMatrix(void);
+		/*
+		Usage: Returns whether or not the model matrix has been updated
+		Arguments: ---
+		Output: has the model matrix changed?
+		*/
+		bool GetHasChanged(void);
+		/*
+		Usage: Called to let this rigidbody know that its changes have been accounted for by the rest of the engine
+		Arguments: ---
+		Output: ---
+		*/
+		void ChangesAccepted(void);
 		/*
 		Usage: Sets Model to World matrix
 		Arguments: Model to World matrix

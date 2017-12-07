@@ -43,7 +43,12 @@ void MyRigidBody::Swap(MyRigidBody& a_pOther) {
 	std::swap(m_v3MaxG, a_pOther.m_v3MaxG);
 
 	std::swap(m_v3HalfWidth, a_pOther.m_v3HalfWidth);
+	std::swap(m_v3GHalfWidth, a_pOther.m_v3GHalfWidth);
 	std::swap(m_v3ARBBSize, a_pOther.m_v3ARBBSize);
+
+	std::swap(m_fXScale, a_pOther.m_fXScale);
+	std::swap(m_fYScale, a_pOther.m_fYScale);
+	std::swap(m_fZScale, a_pOther.m_fZScale);
 
 	std::swap(m_m4ToWorld, a_pOther.m_m4ToWorld);
 
@@ -75,6 +80,8 @@ vector3 MyRigidBody::GetMinGlobal(void) { return m_v3MinG; }
 vector3 MyRigidBody::GetMaxGlobal(void) { return m_v3MaxG; }
 vector3 MyRigidBody::GetHalfWidth(void) { return m_v3HalfWidth; }
 matrix4 MyRigidBody::GetModelMatrix(void) { return m_m4ToWorld; }
+bool Simplex::MyRigidBody::GetHasChanged(void) { return m_bHasChanged; }
+void Simplex::MyRigidBody::ChangesAccepted(void) { m_bHasChanged = false; }
 void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix) {
 	//to save some calculations if the model matrix is the same there is nothing to do here
 	if (a_m4ModelMatrix == m_m4ToWorld)
@@ -82,6 +89,9 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix) {
 
 	//Assign the model matrix
 	m_m4ToWorld = a_m4ModelMatrix;
+
+	//The matrix has been updated.  Flag this rigidbody as recently updated
+	m_bHasChanged = true;
 
 	//Calculate the 8 corners of the cube
 	vector3 v3Corner[8];
@@ -189,7 +199,12 @@ MyRigidBody::MyRigidBody(MyRigidBody const& a_pOther) {
 	m_v3MaxG = a_pOther.m_v3MaxG;
 
 	m_v3HalfWidth = a_pOther.m_v3HalfWidth;
+	m_v3GHalfWidth = a_pOther.m_v3GHalfWidth;
 	m_v3ARBBSize = a_pOther.m_v3ARBBSize;
+
+	m_fXScale = a_pOther.m_fXScale;
+	m_fYScale = a_pOther.m_fYScale;
+	m_fZScale = a_pOther.m_fZScale;
 
 	m_m4ToWorld = a_pOther.m_m4ToWorld;
 
@@ -224,30 +239,45 @@ void MyRigidBody::ClearCollidingList(void) {
 	m_CollidingRBSet.clear();
 }
 bool MyRigidBody::IsColliding(MyRigidBody* const a_pOther) {
-	//If one or both objects does not have collisions, return false
-	if (!GetHasCollisions() || !a_pOther->GetHasCollisions())
-		return false;
+	//Null checks
+	if (a_pOther == nullptr) { return false; }
+	//check if spheres are colliding
+	bool bColliding = true;
+	//bColliding = (glm::distance(GetCenterGlobal(), other->GetCenterGlobal()) < m_fRadius + other->m_fRadius);
+	//if they are check the Axis Aligned Bounding Box
+	if (bColliding) {//they are colliding with bounding sphere
+		if (this->m_v3MaxG.x < a_pOther->m_v3MinG.x) //this to the right of other
+			bColliding = false;
+		if (this->m_v3MinG.x > a_pOther->m_v3MaxG.x) //this to the left of other
+			bColliding = false;
 
-	//check if spheres are colliding as pre-test
-	bool bColliding = (glm::distance(GetCenterGlobal(), a_pOther->GetCenterGlobal()) < m_fRadius + a_pOther->m_fRadius);
+		if (this->m_v3MaxG.y < a_pOther->m_v3MinG.y) //this below of other
+			bColliding = false;
+		if (this->m_v3MinG.y > a_pOther->m_v3MaxG.y) //this above of other
+			bColliding = false;
 
-	//if they are colliding check the SAT
-	if (bColliding) {
-		if (SAT(a_pOther) != eSATResults::SAT_NONE)
-			bColliding = false;// reset to false
-	}
+		if (this->m_v3MaxG.z < a_pOther->m_v3MinG.z) //this behind of other
+			bColliding = false;
+		if (this->m_v3MinG.z > a_pOther->m_v3MaxG.z) //this in front of other
+			bColliding = false;
 
-	if (bColliding) //they are colliding
-	{
-		this->AddCollisionWith(a_pOther);
-		a_pOther->AddCollisionWith(this);
-	}
-	else //they are not colliding
-	{
+		if (bColliding) {
+			if (SAT(a_pOther) > 0) {
+				bColliding = false;
+			}
+		}
+
+		if (bColliding) {//they are colliding with bounding box also
+			this->AddCollisionWith(a_pOther);
+			a_pOther->AddCollisionWith(this);
+		} else {//they are not colliding with bounding box
+			this->RemoveCollisionWith(a_pOther);
+			a_pOther->RemoveCollisionWith(this);
+		}
+	} else {//they are not colliding with bounding sphere
 		this->RemoveCollisionWith(a_pOther);
 		a_pOther->RemoveCollisionWith(this);
 	}
-
 	return bColliding;
 }
 void MyRigidBody::AddToRenderList(void) {
