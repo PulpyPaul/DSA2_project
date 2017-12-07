@@ -11,13 +11,9 @@ void Application::InitVariables(void) {
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 0.0f), 1);
 	m_pLightMngr->SetIntensity(10.0f, 1);
 
-	locationIndex = 0;
-
-	//Create the room
-	CreateRoom();
-
 	// Create target locations
-
+	locationIndex = 0;
+	
 	// Back wall
 	targetLocations.push_back(vector3(0.0f, 1.0f, 13.5f));
 
@@ -25,36 +21,30 @@ void Application::InitVariables(void) {
 	targetLocations.push_back(vector3(0.0f, 1.0f, -13.5f));
 
 	// Left wall
-	targetLocations.push_back(vector3(12.5f, 1.0f, 0.0f));
+	targetLocations.push_back(vector3(13.0f, 1.0f, 0.0f));
 
 	// Right wall
-	targetLocations.push_back(vector3(-12.5f, 1.0f, 0.0f));
-		
+	targetLocations.push_back(vector3(-13.0f, 1.0f, 0.0f));
+
+	//Create the room
+	CreateRoom();
+
 	// Set Dart Indexes
 	m_pEntityMngr->setDartIndex(m_pEntityMngr->GetEntityCount());
 	m_pEntityMngr->setCurrDartIndex(m_pEntityMngr->GetEntityCount());
-
+	
 	// Creates 20 Darts in the entity manager
 	for (uint i = 0; i < 20; i++) {
 		m_pEntityMngr->AddEntity("FinalScene\\Dart.obj", "Dart");
 		m_pEntityMngr->SetModelMatrix(glm::translate(vector3(1000.0f, 1000.0f * i, 0.0f)));
 	}
 
-	m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar1");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 0.0f, 0.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f));
-
-	//m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar2");
-	//m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 0.0f, 1.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f) * glm::rotate(IDENTITY_M4, 180.0f, AXIS_Y));
-
-	m_pEntityMngr->AddEntity("FinalScene\\Target.obj", "Target");
-	m_pEntityMngr->SetModelMatrix(glm::translate(targetLocations[locationIndex]) * glm::scale(0.007f, 0.007f, 0.007f));
-	
 	//Make bounding volumes for all entities invisible
-	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
-		m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
-	}
+	//for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(false);
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleBS(false);
+	//	m_pEntityMngr->GetRigidBody(i)->SetVisibleARBB(false);
+	//}
 }
 void Application::Update(void) {
 	
@@ -138,6 +128,29 @@ void Application::CreateRoom(void) {
 	//Wall 3
 	m_pEntityMngr->AddEntity("FinalScene\\Walls.obj", "Wall3");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, -0.2f, -14.0f)) * glm::scale(1.7f, 0.62f, 1.0f) * glm::rotate(IDENTITY_M4, -90.0f, AXIS_Y));
+
+	// Creates a Bar in the back left corner
+	m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar1");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(11.7f, -0.1f, 12.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f));
+	
+	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool1");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(13.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
+	
+	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool2");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(12.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
+	
+	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool3");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(11.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
+	
+	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool4");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(10.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
+
+	//m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar2");
+	//m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f, 0.0f, 1.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f) * glm::rotate(IDENTITY_M4, 180.0f, AXIS_Y));
+
+	// Creates a Target
+	m_pEntityMngr->AddEntity("FinalScene\\Target.obj", "Target");
+	m_pEntityMngr->SetModelMatrix(glm::translate(targetLocations[locationIndex]) * glm::scale(0.007f, 0.007f, 0.007f));
 }
 
 void Application::Release(void) {
