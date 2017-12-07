@@ -38,6 +38,15 @@ void Application::InitVariables(void) {
 	//}
 }
 void Application::Update(void) {
+	
+	int dart_Indx = m_pEntityMngr->getDartIndex();
+	for (int i = 0; i < 20; i++) {
+		if (m_pEntityMngr->GetRigidBody(dart_Indx + i)->IsColliding(m_pEntityMngr->GetRigidBody("Target"))) {
+			score += 10;
+			m_pEntityMngr->GetEntity(dart_Indx + i)->SetModelMatrix(glm::translate(1000.0f, 1000.0f, 1000.0f));
+		}
+	}
+
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
