@@ -62,7 +62,7 @@ namespace Simplex {
 		int locationIndex;
 
 		Octree* rootOct;
-		bool displayOctree = false;
+		bool displayDebug = false;
 
 	public:
 #pragma region Constructor / Run / Destructor

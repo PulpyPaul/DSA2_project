@@ -45,7 +45,7 @@ void Application::ProcessMousePressed(sf::Event a_event) {
 		);
 
 		// Sets the ModelMatrix for the dart
-		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1) + camForward*2.0f) * rotMat * glm::scale(vector3(0.05f, 0.05f, 0.05f)), m_pEntityMngr->getCurrDartIndex());
+		m_pEntityMngr->SetModelMatrix(glm::translate(m_pCameraMngr->GetPosition(-1) + camForward*2.0f) * rotMat * glm::scale(vector3(0.1f, 0.1f, 0.1f)), m_pEntityMngr->getCurrDartIndex());
 		
 		// Updates the current index 
 		m_pEntityMngr->setCurrDartIndex(m_pEntityMngr->getCurrDartIndex() + 1);
@@ -123,9 +123,9 @@ void Application::ProcessKeyReleased(sf::Event a_event) {
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
 	case sf::Keyboard::Return:
-		displayOctree = !displayOctree;
+		displayDebug = !displayDebug;
 		for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
-			m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(displayOctree);
+			m_pEntityMngr->GetRigidBody(i)->SetVisibleOBB(displayDebug);
 		}
 		break;
 	case sf::Keyboard::LShift:
