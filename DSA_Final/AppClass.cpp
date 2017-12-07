@@ -133,15 +133,13 @@ void Application::CreateRoom(void) {
 	m_pEntityMngr->AddEntity("FinalScene\\Bar.obj", "Bar1");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(11.7f, -0.1f, 12.0f)) * glm::scale(0.0085f, 0.0085f, 0.0085f));
 	
+	// Creates a bunch of stools
 	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool1");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(13.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
-	
 	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool2");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(12.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
-	
 	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool3");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(11.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
-	
 	m_pEntityMngr->AddEntity("FinalScene\\Stool.obj", "Stool4");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(10.0f, -0.1f, 11.0f)) * glm::scale(0.008f, 0.008f, 0.008f));
 
