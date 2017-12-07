@@ -55,7 +55,9 @@ namespace Simplex {
 		sf::Sound m_sound; //sound effect
 		sf::Music m_soundBGM; //background music
 
+		std::vector<vector3> targetLocations;
 		int score;
+		int locationIndex;
 
 	public:
 #pragma region Constructor / Run / Destructor

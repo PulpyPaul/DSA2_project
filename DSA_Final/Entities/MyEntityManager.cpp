@@ -147,7 +147,7 @@ void Simplex::MyEntityManager::Update(void)
 			// Gets the movement direction and scales the speed
 			vector3 direction = m_entityList[i + 1]->GetDirectionMovement();
 			direction = glm::normalize(direction);
-			direction *= 5.0f;
+			direction *= 3.0f;
 			
 			// Updates the model matrix
 			matrix4 modelMatrix = m_entityList[i + 1]->GetModelMatrix();
